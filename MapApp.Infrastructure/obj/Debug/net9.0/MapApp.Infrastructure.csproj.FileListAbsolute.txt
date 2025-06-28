@@ -1,0 +1,16 @@
+/Users/gulcekoc/MapApp/MapApp.Infrastructure/bin/Debug/net9.0/MapApp.Infrastructure.deps.json
+/Users/gulcekoc/MapApp/MapApp.Infrastructure/bin/Debug/net9.0/MapApp.Infrastructure.dll
+/Users/gulcekoc/MapApp/MapApp.Infrastructure/bin/Debug/net9.0/MapApp.Infrastructure.pdb
+/Users/gulcekoc/MapApp/MapApp.Infrastructure/bin/Debug/net9.0/MapApp.Domain.dll
+/Users/gulcekoc/MapApp/MapApp.Infrastructure/bin/Debug/net9.0/MapApp.Domain.pdb
+/Users/gulcekoc/MapApp/MapApp.Infrastructure/obj/Debug/net9.0/MapApp.Infrastructure.csproj.AssemblyReference.cache
+/Users/gulcekoc/MapApp/MapApp.Infrastructure/obj/Debug/net9.0/MapApp.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+/Users/gulcekoc/MapApp/MapApp.Infrastructure/obj/Debug/net9.0/MapApp.Infrastructure.AssemblyInfoInputs.cache
+/Users/gulcekoc/MapApp/MapApp.Infrastructure/obj/Debug/net9.0/MapApp.Infrastructure.AssemblyInfo.cs
+/Users/gulcekoc/MapApp/MapApp.Infrastructure/obj/Debug/net9.0/MapApp.Infrastructure.csproj.CoreCompileInputs.cache
+/Users/gulcekoc/MapApp/MapApp.Infrastructure/obj/Debug/net9.0/MapApp.Infrastructure.sourcelink.json
+/Users/gulcekoc/MapApp/MapApp.Infrastructure/obj/Debug/net9.0/MapApp.I.6C5C8EBD.Up2Date
+/Users/gulcekoc/MapApp/MapApp.Infrastructure/obj/Debug/net9.0/MapApp.Infrastructure.dll
+/Users/gulcekoc/MapApp/MapApp.Infrastructure/obj/Debug/net9.0/refint/MapApp.Infrastructure.dll
+/Users/gulcekoc/MapApp/MapApp.Infrastructure/obj/Debug/net9.0/MapApp.Infrastructure.pdb
+/Users/gulcekoc/MapApp/MapApp.Infrastructure/obj/Debug/net9.0/ref/MapApp.Infrastructure.dll

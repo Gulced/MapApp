@@ -1,0 +1,13 @@
+/Users/gulcekoc/MapApp/MapApp.Domain/bin/Debug/net9.0/MapApp.Domain.deps.json
+/Users/gulcekoc/MapApp/MapApp.Domain/bin/Debug/net9.0/MapApp.Domain.dll
+/Users/gulcekoc/MapApp/MapApp.Domain/bin/Debug/net9.0/MapApp.Domain.pdb
+/Users/gulcekoc/MapApp/MapApp.Domain/obj/Debug/net9.0/MapApp.Domain.csproj.AssemblyReference.cache
+/Users/gulcekoc/MapApp/MapApp.Domain/obj/Debug/net9.0/MapApp.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/gulcekoc/MapApp/MapApp.Domain/obj/Debug/net9.0/MapApp.Domain.AssemblyInfoInputs.cache
+/Users/gulcekoc/MapApp/MapApp.Domain/obj/Debug/net9.0/MapApp.Domain.AssemblyInfo.cs
+/Users/gulcekoc/MapApp/MapApp.Domain/obj/Debug/net9.0/MapApp.Domain.csproj.CoreCompileInputs.cache
+/Users/gulcekoc/MapApp/MapApp.Domain/obj/Debug/net9.0/MapApp.Domain.sourcelink.json
+/Users/gulcekoc/MapApp/MapApp.Domain/obj/Debug/net9.0/MapApp.Domain.dll
+/Users/gulcekoc/MapApp/MapApp.Domain/obj/Debug/net9.0/refint/MapApp.Domain.dll
+/Users/gulcekoc/MapApp/MapApp.Domain/obj/Debug/net9.0/MapApp.Domain.pdb
+/Users/gulcekoc/MapApp/MapApp.Domain/obj/Debug/net9.0/ref/MapApp.Domain.dll

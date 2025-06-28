@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "1mQfWK+UvLfjRpH/BB9aOjEeAvcLbGfNV98hIxfRXCk=",
+  "Source": "MapApp.API",
+  "BasePath": "_content/MapApp.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
