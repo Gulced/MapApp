@@ -5,6 +5,12 @@ using MediatR;
 using MapApp.Application.Features.MapPoints.Commands;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using MapApp.API.Services;
+using MapApp.Application.Common.Interfaces;
+using Microsoft.OpenApi.Models;  // EKLENDİ
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +31,7 @@ builder.Services.AddMediatR(cfg =>
     );
 });
 
-// ✅ JSON ayarları (Polygon deserialize edilsin diye Newtonsoft kullanılıyor)
+// ✅ JSON ayarları
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {
@@ -34,12 +40,64 @@ builder.Services.AddControllers()
         options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
     });
 
+// 🔐 JWT Authentication
+var jwtSettings = builder.Configuration.GetSection("Jwt");
+var key = Encoding.UTF8.GetBytes(jwtSettings["Key"] ?? "");
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings["Issuer"],
+            ValidAudience = jwtSettings["Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(key)
+        };
+    });
+
+// 👤 Current User Service
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+// 🧪 Swagger
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new() { Title = "MapApp API", Version = "v1" });
+
+    // JWT Bearer auth için Swagger'a security definition ekle
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
 var app = builder.Build();
 
-// 🚀 Swagger
+// 🧭 Swagger UI
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -50,10 +108,11 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-// ⚙️ Middleware
+// 🔧 Middleware pipeline
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 
-// 🏁 Uygulamayı başlat
 app.Run();

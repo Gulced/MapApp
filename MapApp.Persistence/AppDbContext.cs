@@ -10,5 +10,8 @@ namespace MapApp.Persistence
 
         public DbSet<MapPoint> MapPoints => Set<MapPoint>();
         public DbSet<MapArea> MapAreas => Set<MapArea>();
+
+        // Kullanıcılar için DbSet
+        public DbSet<AppUser> Users => Set<AppUser>();
     }
 }
