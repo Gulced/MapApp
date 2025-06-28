@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using NetTopologySuite;
 using MediatR;
 using MapApp.Application.Features.MapPoints.Commands;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,13 +25,13 @@ builder.Services.AddMediatR(cfg =>
     );
 });
 
-// ✅ JSON ayarları (Infinity, NaN izinli)
+// ✅ JSON ayarları (Polygon deserialize edilsin diye Newtonsoft kullanılıyor)
 builder.Services.AddControllers()
-    .AddJsonOptions(options =>
+    .AddNewtonsoftJson(options =>
     {
-        options.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals;
-        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+        options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
     });
 
 builder.Services.AddEndpointsApiExplorer();
@@ -55,5 +55,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
-// 🏁 Run app
+// 🏁 Uygulamayı başlat
 app.Run();

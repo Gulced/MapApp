@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MapApp.Common")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+68da8f9196fd53606f5653daee58125e64f7166a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fab9f99b83050d570be5e5c32e04a3378b6281a8")]
 [assembly: System.Reflection.AssemblyProductAttribute("MapApp.Common")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MapApp.Common")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

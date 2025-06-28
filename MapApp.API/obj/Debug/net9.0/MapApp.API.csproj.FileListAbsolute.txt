@@ -9,6 +9,8 @@
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Humanizer.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/MediatR.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/MediatR.Contracts.dll
+/Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Microsoft.AspNetCore.JsonPatch.dll
+/Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Microsoft.AspNetCore.OpenApi.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Microsoft.Bcl.AsyncInterfaces.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Microsoft.Build.Locator.dll
@@ -36,6 +38,8 @@
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Mono.TextTemplating.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/NetTopologySuite.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/NetTopologySuite.IO.PostGis.dll
+/Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Newtonsoft.Json.dll
+/Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Newtonsoft.Json.Bson.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Npgsql.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite.dll
