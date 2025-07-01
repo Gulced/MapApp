@@ -11,6 +11,9 @@
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/MediatR.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/MediatR.Contracts.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Microsoft.AspNetCore.Cryptography.Internal.dll
+/Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+/Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Microsoft.AspNetCore.JsonPatch.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Microsoft.AspNetCore.OpenApi.dll
@@ -32,6 +35,8 @@
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Microsoft.Extensions.DependencyInjection.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Microsoft.Extensions.DependencyModel.dll
+/Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Microsoft.Extensions.Identity.Core.dll
+/Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Microsoft.Extensions.Identity.Stores.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Microsoft.Extensions.Logging.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Microsoft.Extensions.Logging.Abstractions.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Microsoft.Extensions.Options.dll
@@ -45,6 +50,8 @@
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Microsoft.OpenApi.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Mono.TextTemplating.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/NetTopologySuite.dll
+/Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/NetTopologySuite.Features.dll
+/Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/NetTopologySuite.IO.GeoJSON.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/NetTopologySuite.IO.PostGis.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Newtonsoft.Json.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Newtonsoft.Json.Bson.dll
@@ -52,6 +59,7 @@
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Npgsql.NetTopologySuite.dll
+/Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/ProjNET.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Swashbuckle.AspNetCore.Swagger.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerGen.dll
 /Users/gulcekoc/MapApp/MapApp.API/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerUI.dll

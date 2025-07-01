@@ -8,10 +8,10 @@ namespace MapApp.Persistence
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {}
 
-        public DbSet<MapPoint> MapPoints => Set<MapPoint>();
-        public DbSet<MapArea> MapAreas => Set<MapArea>();
+        public DbSet<MapPoint> MapPoints { get; set; }
+        public DbSet<MapArea> MapAreas { get; set; }
 
         // Kullanıcılar için DbSet
-        public DbSet<AppUser> Users => Set<AppUser>();
+        public DbSet<AppUser> Users { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace MapApp.API.Controllers
 {
     public class AuthRequestDto
     {
-        public string? Username { get; set; }
+        public string? Username { get; set; }  // Dışarıdan gelen alan olarak kalabilir
         public string? Password { get; set; }
         public string? Email { get; set; }
     }
@@ -30,37 +30,38 @@ namespace MapApp.API.Controllers
         }
 
         [HttpPost("register")]
-public async Task<IActionResult> Register([FromBody] AuthRequestDto request)
-{
-    if (string.IsNullOrWhiteSpace(request.Username) ||
-        string.IsNullOrWhiteSpace(request.Email) ||
-        string.IsNullOrWhiteSpace(request.Password))
-    {
-        return BadRequest("Kullanıcı adı, e-posta ve şifre zorunludur.");
-    }
+        public async Task<IActionResult> Register([FromBody] AuthRequestDto request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Username) ||
+                string.IsNullOrWhiteSpace(request.Email) ||
+                string.IsNullOrWhiteSpace(request.Password))
+            {
+                return BadRequest("Kullanıcı adı, e-posta ve şifre zorunludur.");
+            }
 
-    if (await _dbContext.Users.AnyAsync(u => u.Username == request.Username))
-        return BadRequest("Kullanıcı adı zaten mevcut.");
+            if (await _dbContext.Users.AnyAsync(u => u.UserName == request.Username))
+                return BadRequest("Kullanıcı adı zaten mevcut.");
 
-    if (await _dbContext.Users.AnyAsync(u => u.Email == request.Email))
-        return BadRequest("E-posta zaten kayıtlı.");
+            if (await _dbContext.Users.AnyAsync(u => u.Email == request.Email))
+                return BadRequest("E-posta zaten kayıtlı.");
 
-    var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
-    var user = new AppUser
-    {
-        Username = request.Username,
-        PasswordHash = passwordHash,
-        Role = "User",
-        Email = request.Email
-    };
+            var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
+            var user = new AppUser
+            {
+                UserName = request.Username,   // Burada UserName olmalı
+                PasswordHash = passwordHash,
+                Role = "User",
+                Email = request.Email
+            };
 
-    _dbContext.Users.Add(user);
-    await _dbContext.SaveChangesAsync();
+            _dbContext.Users.Add(user);
+            await _dbContext.SaveChangesAsync();
 
-    // Kayıt sonrası token üret ve dön
-    var token = CreateJwt(user);
-    return Ok(new { token });
-}
+            // Kayıt sonrası token üret ve dön
+            var token = CreateJwt(user);
+            return Ok(new { token });
+        }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] AuthRequestDto request)
         {
@@ -70,7 +71,7 @@ public async Task<IActionResult> Register([FromBody] AuthRequestDto request)
                 return BadRequest("Kullanıcı adı ve şifre zorunludur.");
             }
 
-            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == request.Username);
             if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
                 return Unauthorized("Geçersiz kullanıcı adı veya şifre.");
 
@@ -83,7 +84,7 @@ public async Task<IActionResult> Register([FromBody] AuthRequestDto request)
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Name, user.UserName),  // Burada UserName olmalı
                 new Claim(ClaimTypes.Role, user.Role),
                 new Claim(ClaimTypes.Email, user.Email)
             };

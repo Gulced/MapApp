@@ -5,6 +5,8 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
+using NetTopologySuite.Features;
 
 namespace MapApp.API.Controllers
 {
@@ -37,12 +39,37 @@ namespace MapApp.API.Controllers
         }
 
         // 🔸 Get All
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var result = await _mediator.Send(new GetAllMapAreasQuery());
-            return Ok(result);
-        }
+        
+        
+
+[HttpGet]
+public async Task<IActionResult> GetAll()
+{
+    var areas = await _mediator.Send(new GetAllMapAreasQuery());
+
+    var geoJsonWriter = new GeoJsonWriter();
+
+    var features = new List<Feature>();
+    foreach (var area in areas)
+    {
+        var attributes = new AttributesTable();
+        attributes.Add("id", area.Id);
+        attributes.Add("name", area.Name);
+        attributes.Add("note", area.Note);
+
+        var feature = new Feature(area.Area, attributes);
+        features.Add(feature);
+    }
+
+    var featureCollection = new FeatureCollection();
+    foreach (var feature in features)
+        featureCollection.Add(feature);
+
+    var geoJson = geoJsonWriter.Write(featureCollection);
+
+    return Content(geoJson, "application/json");
+}
+
 
         // 🔸 Get By Id
         [HttpGet("{id}")]

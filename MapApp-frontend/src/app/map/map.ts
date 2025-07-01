@@ -610,9 +610,22 @@ export class MapComponent implements OnInit, OnDestroy {
   
 
   kaydetAlanDuzenleme(): void {
-    if (!this.featureToEdit || !this.formName) return;
+    if (!this.featureToEdit) {
+      alert('Düzenlenecek bir alan seçilmedi.');
+      return;
+    }
+  
+    if (!this.formName) {
+      alert('Lütfen alan adı girin.');
+      return;
+    }
   
     const featureId = this.featureToEdit.get('id');
+    if (!featureId) {
+      alert('Geçerli bir alan IDsi bulunamadı.');
+      return;
+    }
+  
     const geometry = this.featureToEdit.getGeometry();
   
     if (!geometry || geometry.getType() !== 'Polygon') {
@@ -620,26 +633,32 @@ export class MapComponent implements OnInit, OnDestroy {
       return;
     }
   
+    // Koordinatları GeoJSON formatına uygun şekilde hazırla
     const coords = (geometry as Polygon).getCoordinates(); // [[[lon, lat], [lon, lat], ...]]
     const formattedCoordinates = coords.map(ring =>
       ring.map(coord => [coord[0], coord[1]])
     );
   
+    // Backend'e göndereceğin alan verisi
     const areaData = {
       id: featureId,
       name: this.formName,
       note: this.formDescription,
-      coordinates: [formattedCoordinates[0]] // sadece dış halkayı alıyoruz
+      coordinates: [formattedCoordinates[0]] // Sadece dış halkayı gönderiyoruz
     };
   
+    // API isteği gönder
     this.apiService.updateArea(featureId, areaData).subscribe({
-      next: () => this.zone.run(() => {
-        this.featureToEdit?.set('name', this.formName);
-        this.featureToEdit?.set('description', this.formDescription);
-        this.resetDuzenlemePaneli();
-      }),
+      next: () => {
+        // Angular zone içine al, UI güncellemeleri için
+        this.zone.run(() => {
+          this.featureToEdit?.set('name', this.formName);
+          this.featureToEdit?.set('description', this.formDescription);
+          this.resetDuzenlemePaneli();
+        });
+      },
       error: (err) => {
-        console.error(err);
+        console.error('Alan güncellenirken hata:', err);
         alert('Alan güncellenemedi.');
       }
     });
@@ -679,7 +698,6 @@ export class MapComponent implements OnInit, OnDestroy {
       }
     });
   }
-  
   
   
   loadExistingAreas(): void {
@@ -724,15 +742,17 @@ export class MapComponent implements OnInit, OnDestroy {
             return null;
           }
   
+          // Burada gelen lon/lat doğrudan EPSG:4326 olduğu için fromLonLat kullan
           const feature = new Feature({
             geometry: new Point(fromLonLat([dto.longitude, dto.latitude]))
           });
+  
           feature.set('id', dto.id);
-          feature.set('name', dto.name || '');
-          feature.set('description', dto.note || '');
+          feature.set('name', dto.title || '');        // backend'de Title olarak geldiyse burası title olmalı
+          feature.set('description', dto.description || '');  // backend description olarak döndürdüyse burası description olmalı
           feature.set('feature_type', 'point');
           return feature;
-        }).filter(f => f !== null); // Hatalı veriler çıkarılır
+        }).filter(f => f !== null);
   
         this.pointVectorSource.clear();
         this.pointVectorSource.addFeatures(features as Feature[]);
@@ -740,6 +760,7 @@ export class MapComponent implements OnInit, OnDestroy {
       error: (err) => console.error('❌ Noktalar yüklenirken hata:', err)
     });
   }
+  
   
   handleKeyDown(event: KeyboardEvent): void {
     if (event.key === 'Escape') {
