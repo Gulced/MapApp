@@ -34,7 +34,8 @@ type FeatureType = 'area' | 'point';
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [CommonModule, FormsModule, MenuComponent],
+  imports: [CommonModule, FormsModule, MenuComponent
+    ],
   templateUrl: './map.html',
   styleUrls: ['./map.css']
 })
