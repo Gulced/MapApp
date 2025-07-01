@@ -4,6 +4,7 @@
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 /* Harita boyutu */
@@ -46,7 +47,7 @@
   position: absolute;
   bottom: 10px;
   left: 10px;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgba(111, 66, 193, 0.85);
   color: white;
   padding: 8px 15px;
   border-radius: 8px;
@@ -62,19 +63,26 @@
   top: 80px;
   left: 10px;
   width: 300px;
-  background: rgba(255, 255, 255, 0.98);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(4px);
   padding: 15px;
   border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   z-index: 1000;
   display: flex;
   flex-direction: column;
+  animation: fadeInPanel 0.3s ease;
 }
-.action-panel.info-panel { border-left: 5px solid #007bff; }
-.action-panel.add-panel { border-left: 5px solid #28a745; }
-.action-panel.edit-panel { border-left: 5px solid #ffc107; }
+@keyframes fadeInPanel {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-/* Panel başlığı */
+/* Panel türlerine göre renkler */
+.action-panel.info-panel { border-left: 5px solid #6f42c1; }
+.action-panel.add-panel { border-left: 5px solid #9b59b6; }
+.action-panel.edit-panel { border-left: 5px solid #ab47bc; }
+
 .panel-header {
   display: flex;
   justify-content: space-between;
@@ -86,6 +94,10 @@
 .panel-header h3 {
   margin: 0;
   font-size: 18px;
+  color: #6f42c1;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 .panel-header .close-btn {
   background: none;
@@ -99,14 +111,12 @@
   color: #333;
 }
 
-/* Bilgi açıklaması */
 .panel-content .info-description {
   font-size: 14px;
   line-height: 1.6;
   white-space: pre-wrap;
 }
 
-/* Form alanları */
 .panel-content .form-group {
   margin-bottom: 15px;
 }
@@ -120,27 +130,25 @@
 .panel-content input,
 .panel-content textarea {
   width: 100%;
-  padding: 8px;
+  padding: 10px;
   font-size: 14px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 6px;
+  background-color: #f8f9fa;
   box-sizing: border-box;
 }
 
-/* Aksiyon butonları */
 .panel-actions {
   display: flex;
-  justify-content: flex-end;
-  gap: 10px;
+  justify-content: space-between;
   margin-top: 10px;
 }
 
-/* Genel butonlar */
 button {
   padding: 10px 15px;
   font-size: 14px;
   color: white;
-  background-color: #343a40;
+  background-color: #6f42c1;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -148,39 +156,20 @@ button {
   transition: background-color 0.2s ease, transform 0.1s ease;
 }
 button:hover {
-  background-color: #495057;
+  background-color: #5e38a0;
 }
 button:active {
   transform: translateY(1px);
 }
 
-/* Özel renkli butonlar */
-.btn-logout {
-  background-color: #c82333;
-}
-.btn-onayla {
-  background-color: #218838;
-}
-.btn-iptal {
-  background-color: #6c757d;
-}
-.btn-undo {
-  background-color: #ffc107;
-  color: #212529;
-}
-.btn-cancel-draw {
-  background-color: #b02a37;
-}
-.btn-edit {
-  background-color: #ffc107;
-  color: #212529;
-}
-.btn-delete {
-  background-color: #dc3545;
-  color: white;
-}
+.btn-logout { background-color: #9b59b6; }
+.btn-onayla { background-color: #8e44ad; }
+.btn-iptal { background-color: #6c757d; }
+.btn-undo { background-color: #ffc107; color: #212529; }
+.btn-cancel-draw { background-color: #b02a37; }
+.btn-edit { background-color: #ab47bc; color: #fff; }
+.btn-delete { background-color: #c82333; color: white; }
 
-/* Düzenle/sil buton grubu */
 .info-actions {
   display: flex;
   justify-content: flex-end;
@@ -188,7 +177,6 @@ button:active {
   margin-top: 15px;
 }
 
-/* Sağ tık menüsü */
 .custom-context-menu {
   position: fixed;
   z-index: 1001;
@@ -201,6 +189,9 @@ button:active {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  transform: scale(1);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 1;
 }
 .custom-context-menu button {
   background: none;
@@ -215,5 +206,13 @@ button:active {
   transition: background 0.13s;
 }
 .custom-context-menu button:hover {
-  background: #007bff22;
+  background: #e1d7f3;
+}
+
+@media (max-width: 768px) {
+  .action-panel {
+    width: 90vw;
+    left: 5vw;
+    top: 20px;
+  }
 }
