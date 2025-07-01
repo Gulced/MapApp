@@ -1,0 +1,16 @@
+<!-- app.html -->
+
+<!-- AppComponent başarılı şekilde yüklendi -->
+<p style="color: green;">App component aktif ✅</p>
+
+<!-- Giriş yapıldıysa harita -->
+<div *ngIf="isLoggedIn">
+  <p style="color: blue;">Giriş başarılı. Harita gösteriliyor...</p>
+  <app-map></app-map>
+</div>
+
+<!-- Giriş yapılmadıysa auth formu -->
+<div *ngIf="!isLoggedIn">
+  <p style="color: red;">Giriş yapılmadı. Lütfen giriş yapın.</p>
+  <app-auth></app-auth>
+</div>

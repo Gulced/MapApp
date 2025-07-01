@@ -1,0 +1,69 @@
+<!-- YENİ: Tüm harita ve kontrolleri içeren ana kapsayıcı -->
+<div class="map-container">
+
+    <!-- Menü ve Çıkış Butonu -->
+    <div class="logout-container">
+      <app-menu (featureSelected)="onFeatureSelected($event)"></app-menu>
+      <button (click)="logout()" class="btn-logout">Çıkış Yap</button>
+    </div>
+  
+    <!-- Çizim Kontrol Paneli -->
+    <div class="drawing-controls" *ngIf="isDrawingActive">
+      <span>{{ getDrawingModeText() }} Aktif</span>
+      <button *ngIf="etkilesimModu === 'add-area'" (click)="geriAlSonNokta()" class="btn-undo">Son Noktayı Geri Al</button>
+      <button (click)="tumEtkilesimleriDurdur()" class="btn-cancel-draw">İptal Et</button>
+    </div>
+  
+    <!-- Mod Durum Göstergesi -->
+    <div class="mode-indicator">
+      <span>{{ getModDurumuText() }}</span>
+    </div>
+  
+    <!-- Haritanın gösterileceği ana alan -->
+    <div id="map" class="map"></div>
+  
+    <!-- BİRLEŞİK AKSİYON PANELİ -->
+    <div class="action-panel" *ngIf="activePanel" [ngClass]="getPanelClass()">
+      <div class="panel-header">
+        <h3>{{ getPanelTitle() }}</h3>
+        <button class="close-btn" (click)="closeActivePanel()">×</button>
+      </div>
+      <div class="panel-content">
+        <!-- Sadece bilgi panelinde düzenle ve sil butonları gösteriliyor -->
+        <ng-container *ngIf="activePanel === 'info' && selectedFeatureInfo">
+          <p class="info-description">{{ selectedFeatureInfo.description }}</p>
+          <div class="info-actions">
+            <button class="btn-edit" (click)="editSelectedFeature()">Düzenle</button>
+            <button class="btn-delete" (click)="deleteSelectedFeature()">Sil</button>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="activePanel === 'add' || activePanel === 'edit'">
+          <div class="form-group">
+            <label for="nameInput">{{ isAreaMode() ? 'Alan' : 'Nokta' }} Adı:</label>
+            <input type="text" id="nameInput" [(ngModel)]="formName" name="nameInput" [placeholder]="isAreaMode() ? 'Örn: Evimin Bahçesi' : 'Örn: Buluşma Noktası'">
+          </div>
+          <div class="form-group">
+            <label for="descriptionInput">Açıklama:</label>
+            <textarea id="descriptionInput" [(ngModel)]="formDescription" name="descriptionInput" rows="3" [placeholder]="isAreaMode() ? 'Örn: Sulama yapılacak alan' : 'Örn: Kahve içilecek yer'"></textarea>
+          </div>
+        </ng-container>
+      </div>
+      <div class="panel-actions" *ngIf="activePanel !== 'info'">
+        <button class="btn-onayla" (click)="handleSave()">Kaydet</button>
+        <button class="btn-iptal" (click)="closeActivePanel()">İptal</button>
+      </div>
+    </div>
+  
+    <!-- ... mevcut kodun sonuna ekle ... -->
+  <div
+    *ngIf="contextMenuVisible"
+    class="custom-context-menu"
+    [style.left.px]="contextMenuX"
+    [style.top.px]="contextMenuY"
+    (contextmenu)="$event.preventDefault()"
+  >
+    <button (click)="onContextEdit()">Düzenle</button>
+    <button (click)="onContextDelete()">Sil</button>
+  </div>
+  
+  </div> <!-- .map-container kapanışı -->

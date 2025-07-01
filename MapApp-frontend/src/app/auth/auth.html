@@ -1,0 +1,84 @@
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <h2 class="auth-title">{{ isLoginMode ? 'Giriş Yap' : 'Kayıt Ol' }}</h2>
+
+    <form (ngSubmit)="onSubmit()" #authForm="ngForm" novalidate>
+
+      <!-- Kullanıcı Adı -->
+      <div class="form-group">
+        <label for="username">Kullanıcı Adı</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          [(ngModel)]="username"
+          #usernameRef="ngModel"
+          required
+          minlength="3"
+          placeholder="Kullanıcı adınız"
+          [class.invalid]="usernameRef.invalid && usernameRef.touched"
+        />
+        <div class="validation-error" *ngIf="usernameRef.invalid && usernameRef.touched">
+          Kullanıcı adı en az 3 karakter olmalı.
+        </div>
+      </div>
+
+      <!-- Email sadece kayıt modunda -->
+      <div class="form-group" *ngIf="!isLoginMode">
+        <label for="email">E-posta</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="email"
+          #emailRef="ngModel"
+          required
+          email
+          placeholder="example@mail.com"
+          [class.invalid]="emailRef.invalid && emailRef.touched"
+        />
+        <div class="validation-error" *ngIf="emailRef.invalid && emailRef.touched">
+          Geçerli bir e-posta giriniz.
+        </div>
+      </div>
+
+      <!-- Şifre -->
+      <div class="form-group">
+        <label for="password">Şifre</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="password"
+          #passwordRef="ngModel"
+          required
+          minlength="6"
+          placeholder="En az 6 karakter"
+          [class.invalid]="passwordRef.invalid && passwordRef.touched"
+        />
+        <div class="validation-error" *ngIf="passwordRef.invalid && passwordRef.touched">
+          Şifre en az 6 karakter olmalı.
+        </div>
+      </div>
+
+      <!-- Hata mesajı -->
+      <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+
+      <!-- Submit butonu -->
+      <button
+        type="submit"
+        class="btn-submit"
+        [disabled]="authForm.invalid"
+      >
+        {{ isLoginMode ? 'Giriş Yap' : 'Kayıt Ol' }}
+      </button>
+    </form>
+
+    <!-- Toggle link -->
+    <p class="toggle-text">
+      <a (click)="toggleMode()" class="toggle-link">
+        {{ isLoginMode ? 'Hesabın yok mu? Kayıt ol' : 'Zaten hesabın var mı? Giriş yap' }}
+      </a>
+    </p>
+  </div>
+</div>

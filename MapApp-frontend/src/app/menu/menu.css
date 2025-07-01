@@ -1,0 +1,59 @@
+.feature-menu {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .feature-menu-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .feature-menu-button:hover, .feature-menu-button:focus {
+    background-color: #45a049;
+  }
+  
+  .feature-list {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 180px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  .show {
+    display: block;
+  }
+  
+  .feature-group-header {
+    font-weight: bold;
+    padding: 10px 16px;
+    background-color: #eaeaea;
+    color: #333;
+    font-size: 14px;
+    border-top: 1px solid #ccc;
+    cursor: pointer;
+  }
+  
+  .feature-item {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    text-align: left;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+  
+  .feature-item:hover {
+    background-color: #ddd;
+  }

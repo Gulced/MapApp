@@ -10,11 +10,27 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using MapApp.API.Services;
 using MapApp.Application.Common.Interfaces;
-using Microsoft.OpenApi.Models;  // EKLENDİ
+using MapApp.Domain.Entities; // Add this line to include the User class
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 🌐 EF Core + PostGIS
+// CORS policy adı
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+// CORS servisini ekle (test için açık)
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
+// EF Core + PostGIS
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
@@ -22,7 +38,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     )
 );
 
-// 🧠 MediatR
+// MediatR servisi
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssemblies(
@@ -31,16 +47,23 @@ builder.Services.AddMediatR(cfg =>
     );
 });
 
-// ✅ JSON ayarları
+// 🔥 JSON ayarları: camelCase verileri karşılamak için case-insensitive yapı
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {
+        options.SerializerSettings.ContractResolver = new DefaultContractResolver
+        {
+            NamingStrategy = new CamelCaseNamingStrategy
+            {
+                ProcessDictionaryKeys = true,
+                OverrideSpecifiedNames = true
+            }
+        };
         options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
     });
 
-// 🔐 JWT Authentication
+// JWT Authentication ayarları
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = Encoding.UTF8.GetBytes(jwtSettings["Key"] ?? "");
 
@@ -59,20 +82,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-// 👤 Current User Service
+// Kullanıcı servisi
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
-// 🧪 Swagger
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "MapApp API", Version = "v1" });
 
-    // JWT Bearer auth için Swagger'a security definition ekle
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
+        Description = "JWT Authorization header using the Bearer scheme. Örnek: \"Bearer {token}\"",
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey,
@@ -97,7 +119,45 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// 🧭 Swagger UI
+// CORS middleware en üstte olmalı
+app.UseCors(MyAllowSpecificOrigins);
+
+app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+    db.Database.Migrate(); // varsa migration'ları uygula
+
+    if (!db.Users.Any(u => u.Role == "admin"))
+    {
+        var admin = new AppUser
+        {
+            
+            Username = "admin",
+            Email = "admin@mapapp.local",
+            PasswordHash = Convert.ToBase64String(Encoding.UTF8.GetBytes("Admin123!")), // ⚠️ Gerçek hash fonksiyonunla değiştir
+            Role = "admin"
+        };
+
+        db.Users.Add(admin);
+        db.SaveChanges();
+        Console.WriteLine("✅ Admin user oluşturuldu: admin / Admin123!");
+    }
+    else
+    {
+        Console.WriteLine("ℹ️ Admin zaten var.");
+    }
+}
+
+
+// Swagger UI sadece Development'ta aktif
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -107,12 +167,5 @@ if (app.Environment.IsDevelopment())
         options.RoutePrefix = string.Empty;
     });
 }
-
-// 🔧 Middleware pipeline
-app.UseHttpsRedirection();
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapControllers();
 
 app.Run();

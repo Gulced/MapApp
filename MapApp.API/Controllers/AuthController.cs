@@ -9,6 +9,13 @@ using System.Text;
 
 namespace MapApp.API.Controllers
 {
+    public class AuthRequestDto
+    {
+        public string? Username { get; set; }
+        public string? Password { get; set; }
+        public string? Email { get; set; }
+    }
+
     [ApiController]
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
@@ -23,31 +30,49 @@ namespace MapApp.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(string username, string password)
-        {
-            if (await _dbContext.Users.AnyAsync(u => u.Username == username))
-                return BadRequest("Username already exists");
+public async Task<IActionResult> Register([FromBody] AuthRequestDto request)
+{
+    if (string.IsNullOrWhiteSpace(request.Username) ||
+        string.IsNullOrWhiteSpace(request.Email) ||
+        string.IsNullOrWhiteSpace(request.Password))
+    {
+        return BadRequest("Kullanıcı adı, e-posta ve şifre zorunludur.");
+    }
 
-            var passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
-            var user = new AppUser
-            {
-                Username = username,
-                PasswordHash = passwordHash,
-                Role = "User"
-            };
+    if (await _dbContext.Users.AnyAsync(u => u.Username == request.Username))
+        return BadRequest("Kullanıcı adı zaten mevcut.");
 
-            _dbContext.Users.Add(user);
-            await _dbContext.SaveChangesAsync();
+    if (await _dbContext.Users.AnyAsync(u => u.Email == request.Email))
+        return BadRequest("E-posta zaten kayıtlı.");
 
-            return Ok("User registered");
-        }
+    var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
+    var user = new AppUser
+    {
+        Username = request.Username,
+        PasswordHash = passwordHash,
+        Role = "User",
+        Email = request.Email
+    };
 
+    _dbContext.Users.Add(user);
+    await _dbContext.SaveChangesAsync();
+
+    // Kayıt sonrası token üret ve dön
+    var token = CreateJwt(user);
+    return Ok(new { token });
+}
         [HttpPost("login")]
-        public async Task<IActionResult> Login(string username, string password)
+        public async Task<IActionResult> Login([FromBody] AuthRequestDto request)
         {
-            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
-            if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
-                return Unauthorized("Invalid credentials");
+            if (string.IsNullOrWhiteSpace(request.Username) ||
+                string.IsNullOrWhiteSpace(request.Password))
+            {
+                return BadRequest("Kullanıcı adı ve şifre zorunludur.");
+            }
+
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
+            if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
+                return Unauthorized("Geçersiz kullanıcı adı veya şifre.");
 
             var token = CreateJwt(user);
             return Ok(new { token });
@@ -59,7 +84,8 @@ namespace MapApp.API.Controllers
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, user.Role)
+                new Claim(ClaimTypes.Role, user.Role),
+                new Claim(ClaimTypes.Email, user.Email)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
